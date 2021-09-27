@@ -1,0 +1,12 @@
+Area of improvements:
+1 - lombok 
+2 - separate controllers for trails and booking
+3 - Unit test missing
+4 - java streams 
+5 - do not use @Autowired, use constructor injection only.
+6 - separate DTO and entity classes
+7 - 
+
+Add-ons:
+Infra as code - Terraform by HashiCorp
+Java streams use

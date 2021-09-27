@@ -1,0 +1,278 @@
+#This doc can be shared with frontend team as quick reference for API integrations.
+
+1 - View all the trails available for hiking
+2 - View a selected trail
+3 - Book a selected trail for hiking
+4 - View a booking
+5 - Cancel a booking
+
+======================================================================
+1 - View all the trails available for hiking
+Request:
+curl -X GET "http://localhost:8080/api/hike/v1/trails" -H "accept: */*"
+
+GET -> http://localhost:8080/api/hike/v1/trails
+
+Response:
+{
+  "_embedded": {
+    "trailList": [
+      {
+        "id": 1,
+        "name": "Shire",
+        "startAt": "07:00",
+        "endAt": "09:00",
+        "minimumAge": 5,
+        "maximumAge": 100,
+        "unitPrice": 29.9,
+        "_links": {
+          "self": {
+            "href": "http://localhost:8080/api/hike/v1/trails/1"
+          },
+          "trails": {
+            "href": "http://localhost:8080/api/hike/v1/trails"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "name": "Gondor",
+        "startAt": "10:00",
+        "endAt": "13:00",
+        "minimumAge": 11,
+        "maximumAge": 50,
+        "unitPrice": 59.9,
+        "_links": {
+          "self": {
+            "href": "http://localhost:8080/api/hike/v1/trails/2"
+          },
+          "trails": {
+            "href": "http://localhost:8080/api/hike/v1/trails"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "name": "Mordor",
+        "startAt": "14:00",
+        "endAt": "19:00",
+        "minimumAge": 18,
+        "maximumAge": 40,
+        "unitPrice": 99.9,
+        "_links": {
+          "self": {
+            "href": "http://localhost:8080/api/hike/v1/trails/3"
+          },
+          "trails": {
+            "href": "http://localhost:8080/api/hike/v1/trails"
+          }
+        }
+      }
+    ]
+  },
+  "_links": {
+    "self": {
+      "href": "http://localhost:8080/api/hike/v1/trails"
+    }
+  }
+}
+
+======================================================================
+2 - View a selected trail
+Request:
+curl -X GET "http://localhost:8080/api/hike/v1/trails/3" -H "accept: */*"
+
+GET -> http://localhost:8080/api/hike/v1/trails/3
+
+Response:
+{
+  "id": 3,
+  "name": "Mordor",
+  "startAt": "14:00",
+  "endAt": "19:00",
+  "minimumAge": 18,
+  "maximumAge": 40,
+  "unitPrice": 99.9,
+  "_links": {
+    "self": {
+      "href": "http://localhost:8080/api/hike/v1/trails/3"
+    },
+    "trails": {
+      "href": "http://localhost:8080/api/hike/v1/trails"
+    }
+  }
+}
+
+======================================================================
+3 - Book a selected trail for hiking
+Request:
+curl -X POST "http://localhost:8080/api/hike/v1/booktrail" -H "accept: */*" -H "Content-Type: application/json" -d "{ \"trailId\": 1, \"hikingDate\": \"2021-10-26\", \"hikers\": [ { \"name\": \"Ginni\", \"dateOfBirth\": \"1990-09-14\" }, { \"name\": \"Robert\", \"dateOfBirth\": \"2005-06-28\" } ]}"
+
+POST -> http://localhost:8080/api/hike/v1/booktrail
+{
+    "trailId": 1,
+    "hikingDate": "2021-10-26",
+    "hikers": [
+        {
+            "name": "Ginni",
+            "dateOfBirth": "1990-09-14"
+        },
+        {
+            "name": "Robert",
+            "dateOfBirth": "2005-06-28"
+        }
+    ]
+}
+
+Response:
+{
+  "id": 4,
+  "trailId": 1,
+  "hikingDate": "2021-10-26",
+  "hikers": [
+    {
+      "hid": 7,
+      "name": "Ginni",
+      "dateOfBirth": "1990-09-14",
+      "ageAppropriateForHiking": true,
+      "alert": "None",
+      "age": 30
+    },
+    {
+      "hid": 8,
+      "name": "Robert",
+      "dateOfBirth": "2005-06-28",
+      "ageAppropriateForHiking": true,
+      "alert": "None",
+      "age": 16
+    }
+  ],
+  "recordCreateTimestampUtc": "2021-08-28T19:54:21.504+00:00",
+  "recordLastUpdateTimestampUtc": "2021-08-28T19:54:21.504+00:00",
+  "status": "SUCCESS",
+  "bookedTrailDetails": {
+    "id": 1,
+    "name": "Shire",
+    "startAt": "07:00",
+    "endAt": "09:00",
+    "minimumAge": 5,
+    "maximumAge": 100,
+    "unitPrice": 29.9
+  },
+  "totalCost": 59.8,
+  "_links": {
+    "self": {
+      "href": "http://localhost:8080/api/hike/v1/bookings/4"
+    },
+    "bookings": {
+      "href": "http://localhost:8080/api/hike/v1/bookings"
+    }
+  }
+}
+
+======================================================================
+4 - View a booking
+Request:
+curl -X GET "http://localhost:8080/api/hike/v1/bookings/2" -H "accept: */*"
+
+GET -> http://localhost:8080/api/hike/v1/bookings/2
+
+Response:
+{
+  "id": 2,
+  "trailId": 2,
+  "hikingDate": "2021-08-28",
+  "hikers": [
+    {
+      "hid": 3,
+      "name": "Vijay",
+      "dateOfBirth": "1992-09-14",
+      "ageAppropriateForHiking": true,
+      "alert": "None",
+      "age": 28
+    },
+    {
+      "hid": 4,
+      "name": "Ram",
+      "dateOfBirth": "2001-09-14",
+      "ageAppropriateForHiking": true,
+      "alert": "None",
+      "age": 19
+    }
+  ],
+  "recordCreateTimestampUtc": "2021-08-28T18:32:17.194+00:00",
+  "recordLastUpdateTimestampUtc": "2021-08-28T18:32:17.194+00:00",
+  "status": "SUCCESS",
+  "bookedTrailDetails": {
+    "id": 2,
+    "name": "Gondor",
+    "startAt": "10:00",
+    "endAt": "13:00",
+    "minimumAge": 11,
+    "maximumAge": 50,
+    "unitPrice": 59.9
+  },
+  "totalCost": 0,
+  "_links": {
+    "self": {
+      "href": "http://localhost:8080/api/hike/v1/bookings/2"
+    },
+    "bookings": {
+      "href": "http://localhost:8080/api/hike/v1/bookings"
+    }
+  }
+}
+
+======================================================================
+5 - Cancel a booking
+Request:
+curl -X PUT "http://localhost:8080/api/hike/v1/cancelBooking/1" -H "accept: */*"
+
+PUT -> http://localhost:8080/api/hike/v1/cancelBooking/1
+
+Response:
+{
+  "id": 1,
+  "trailId": 1,
+  "hikingDate": "2021-08-28",
+  "hikers": [
+    {
+      "hid": 1,
+      "name": "Vijay",
+      "dateOfBirth": "1992-09-14",
+      "ageAppropriateForHiking": true,
+      "alert": "None",
+      "age": 28
+    },
+    {
+      "hid": 2,
+      "name": "Ram",
+      "dateOfBirth": "2001-09-14",
+      "ageAppropriateForHiking": true,
+      "alert": "None",
+      "age": 19
+    }
+  ],
+  "recordCreateTimestampUtc": "2021-08-28T18:32:17.138+00:00",
+  "recordLastUpdateTimestampUtc": "2021-08-28T18:33:09.614+00:00",
+  "status": "CANCELLED",
+  "bookedTrailDetails": {
+    "id": 1,
+    "name": "Shire",
+    "startAt": "07:00",
+    "endAt": "09:00",
+    "minimumAge": 5,
+    "maximumAge": 100,
+    "unitPrice": 29.9
+  },
+  "totalCost": 0,
+  "_links": {
+    "self": {
+      "href": "http://localhost:8080/api/hike/v1/cancelBooking/1"
+    },
+    "bookings": {
+      "href": "http://localhost:8080/api/hike/v1/bookings"
+    }
+  }
+}
+

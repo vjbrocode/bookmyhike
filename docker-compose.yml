@@ -1,0 +1,19 @@
+#verison: "3.8"
+services:
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: hikingappdb
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+  restapi:
+    build: .
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+      
